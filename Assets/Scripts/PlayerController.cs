@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,11 +11,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 5f;
 
     private Animator characterAnimator;
-    
+
     [SerializeField] private GameObject finishCanvas;
 
     private int coinCount = 0;
     [SerializeField] private Text coinText;
+
+    private bool isAtFinish = false;
 
     void Awake()
     {
@@ -25,6 +27,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isAtFinish) return;
+
         horizontalInput = Input.GetAxis("Horizontal");
 
         if (Mathf.Abs(horizontalInput) > 0.1f)
@@ -55,6 +59,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isAtFinish) return;
+
         characterRigidbody.velocity = new Vector2(horizontalInput * characterSpeed, characterRigidbody.velocity.y);
     }
 
@@ -82,6 +88,7 @@ public class PlayerController : MonoBehaviour
             {
                 finishCanvas.SetActive(true);
             }
+            isAtFinish = true;
         }
     }
 }
